@@ -45,6 +45,11 @@ app.get("/frontpage", function(req, res){
     res.sendFile(__dirname + "/views/frontpage.html");
 });
 
+app.get("/start", function(req, res){
+    res.sendFile(__dirname + "/views/start.html");
+});
+
+
 app.get("/register", function(req, res){
     res.sendFile(__dirname + "/views/register.html");
 });
