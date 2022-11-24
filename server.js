@@ -33,17 +33,7 @@ app.set("view engine", "ejs");
 const DATABASE ="userdata.db";
 const db = require("better-sqlite3")(DATABASE);
 
-/* // Sessionvariable setzen
-app.post("/sessionSetzen", function(req, res){
-    //Wert aus Formular lesen
-    const param_sessionValue = req.body.sessionValue;
 
-    // Sessionvariable setzen
-    req.session.sessionValue = param_sessionValue;
-
-    // Weiterleiten
-    res.redirect("/zeigesession")
-}); */
 
 //Start Server
 app.listen(3000, function(){
@@ -64,9 +54,12 @@ app.get("/signout", function(req, res){
     res.redirect("/frontpage");
 });
 
+app.get('/style.css', function(req, res) {
+    res.sendFile(__dirname + "/views/" + "styles.css");
+  });
+
 app.get("/draw", function(req, res){
-    res.sendFile(__dirname + "/draw.html");
-    res.sendFile(__dirname + "/views/draw.js");
+    res.sendFile(__dirname + "/views/draw.html");
 });
 
 
