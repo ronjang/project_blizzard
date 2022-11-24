@@ -33,7 +33,7 @@ app.set("view engine", "ejs");
 const DATABASE ="userdata.db";
 const db = require("better-sqlite3")(DATABASE);
 
-// Sessionvariable setzen
+/* // Sessionvariable setzen
 app.post("/sessionSetzen", function(req, res){
     //Wert aus Formular lesen
     const param_sessionValue = req.body.sessionValue;
@@ -43,7 +43,7 @@ app.post("/sessionSetzen", function(req, res){
 
     // Weiterleiten
     res.redirect("/zeigesession")
-});
+}); */
 
 //Start Server
 app.listen(3000, function(){
@@ -61,7 +61,6 @@ app.get("/register", function(req, res){
 
 app.get("/signout", function(req, res){
     delete req.session['sessionValue'];
-
     res.redirect("/frontpage");
 });
 
@@ -70,30 +69,33 @@ app.get("/draw", function(req, res){
     res.sendFile(__dirname + "/views/draw.js");
 });
 
+
 //POST-Request
 app.post("/login", function(req, res){
     const username = req.body.username;
     const password = req.body.password;
     const param_sessionValue = req.body.username;
-
     
-
+   
     if (Acc.benutzerExistiert(username) == false){
-        res.render("loginError");
-    }
-    if (Acc.anmeldungErfolgreich(username,password) == true){
+        if (Acc.anmeldungErfolgreich(username,password) == false){
+            res.render("loginError");
+        }
+    } else { 
+        (Acc.anmeldungErfolgreich(username,password) == true)
         res.render("loginSuccess", {"username": username, "password": password});
         req.session.username = param_sessionValue
-    }
-    if (Acc.anmeldungErfolgreich(username,password) == false){
-        res.render("loginError");
-    }
+    } 
+
 
 });
+
+
 
 app.post("/newaccount", function(req, res){
     const username = req.body.username;
     const password = req.body.password;
+    const param_sessionValue = req.body.username;
 
     if (Acc.benutzerExistiert(username) == true){
         res.render("registerError", {"username": username});
@@ -109,12 +111,10 @@ app.post("/newaccount", function(req, res){
 
 
 
+
 // Benutzerkonten Managment
 let usernameData = db.prepare("SELECT username FROM accounts").all();
 let passwordData = db.prepare("SELECT password FROM accounts").all();
-
-
-
 
 
 
