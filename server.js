@@ -1,20 +1,13 @@
-// Initialisierung Express.js
+// Initializing
+// Express.js
 const express = require("express");
 const app = express();
 
-
-
-//Freigabe des /views Ordner
-/* app.use(express.static(__dirname + "/views"));
-app.get("/kontaktausgabe", function(req,res){
-    res.render("kontaktausgabe");
-}); */
-
-//Initialisierung express-fileupload
+// express-fileupload
 const fileUpload =require('express-fileupload');
 app.use(fileUpload());
 
-//Initialisierung von express-session
+// express-session
 const session = require('express-session');
 app.use(session({
     secret: 'example',
@@ -22,33 +15,57 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//Initialisierung body-parser
+// 'images' folder
+app.use(express.static(__dirname + '/images'))
+
+// body-parser
 app.use(express.urlencoded({extended:true}));
 
-// Initialisierung von EJS
+// EJS
 app.engine(".ejs", require("ejs").__express);
 app.set("view engine", "ejs");
 
-// Initialisierung von Datenbank
+// database
 const DATABASE ="userdata.db";
 const db = require("better-sqlite3")(DATABASE);
 
+const fs = require('fs')
 
 
-//Start Server
+
+//start server
 app.listen(3000, function(){
     console.log("listening on 3000")
 });
 
-// Get req
+// get requests
 app.get("/frontpage", function(req, res){
     res.sendFile(__dirname + "/views/frontpage.html");
 });
+
+
+  // processing the upload action
+    app.post('/onupload', function(req, res) {
+    // from http://zhangwenli.com/blog/2015/12/27/upload-canvas-snapshot-to-nodejs/
+    const dataURL = req.body.img;
+    var matches = dataURL.match(/^data:.+\/(.+);base64,(.*)$/);
+    var buffer = new Buffer.from(matches[2], 'base64');
+  
+    // save canvas to 'images' folder
+    const testFilename = "Testbild.png" // TODO: der Name muss angepasst und in Datenbank gespeichert werden
+    fs.writeFile(__dirname + "/images/" + testFilename, buffer, function (err) {
+      console.log("done");
+    });
+  });
+  
 
 app.get("/start", function(req, res){
     res.sendFile(__dirname + "/views/start.html");
 });
 
+app.get("/invite", function(req, res){
+    res.sendFile(__dirname + "/views/invite.html");
+});
 
 app.get("/register", function(req, res){
     res.sendFile(__dirname + "/views/register.html");
@@ -75,12 +92,12 @@ app.post("/login", function(req, res){
     const param_sessionValue = req.body.username;
     
    
-    if (Acc.benutzerExistiert(username) == false){
-        if (Acc.anmeldungErfolgreich(username,password) == false){
+    if (Acc.checkUsername(username) == false){
+        if (Acc.checkLogin(username,password) == false){
             res.render("loginError");
         }
     } else { 
-        (Acc.anmeldungErfolgreich(username,password) == true)
+        (Acc.checkLogin(username,password) == true)
         res.render("loginSuccess", {"username": username, "password": password});
         req.session.username = param_sessionValue
     } 
@@ -95,10 +112,10 @@ app.post("/newaccount", function(req, res){
     const password = req.body.password;
     const param_sessionValue = req.body.username;
 
-    if (Acc.benutzerExistiert(username) == true){
+    if (Acc.checkUsername(username) == true){
         res.render("registerError", {"username": username});
     } else {
-   Acc.benutzerHinzufuegen(username, password)
+   Acc.addUser(username, password)
         res.render("registerSuccess", {"username": username, "password": password});
         req.session.username = param_sessionValue
     }
@@ -110,15 +127,15 @@ app.post("/newaccount", function(req, res){
 
 
 
-// Benutzerkonten Managment
+// account managment
 let usernameData = db.prepare("SELECT username FROM accounts").all();
 let passwordData = db.prepare("SELECT password FROM accounts").all();
 
 
 
-class Konten {
+class AccountManagment {
 
-    benutzerExistiert(usernameInput){
+    checkUsername(usernameInput){
         for (let i = 0; i < usernameData.length; i++) {
             if (usernameData[i].username == usernameInput){
                 return true
@@ -127,7 +144,7 @@ class Konten {
         return false
     }
 
-    anmeldungErfolgreich(usernameInput, passwordInput){
+    checkLogin(usernameInput, passwordInput){
             for(let i = 0; i < usernameData.length; i++){
                 if (usernameData[i].username == usernameInput && passwordData[i].password == passwordInput){
                     return true
@@ -136,12 +153,12 @@ class Konten {
         return false
     }
 
-    benutzerHinzufuegen(usernameInput, passwordInput){
+    addUser(usernameInput, passwordInput){
         usernameData.push({"username":usernameInput})
         passwordData.push({"password":passwordInput})
     }
 }
 
-let Acc = new Konten();
+let Acc = new AccountManagment();
 
 
