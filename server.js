@@ -29,6 +29,7 @@ app.set("view engine", "ejs");
 const DATABASE ="userdata.db";
 const db = require("better-sqlite3")(DATABASE);
 
+
 const fs = require('fs')
 
 
@@ -38,26 +39,12 @@ app.listen(3000, function(){
     console.log("listening on 3000")
 });
 
+
+
 // get requests
 app.get("/frontpage", function(req, res){
     res.sendFile(__dirname + "/views/frontpage.html");
 });
-
-
-  // processing the upload action
-    app.post('/onupload', function(req, res) {
-    // from http://zhangwenli.com/blog/2015/12/27/upload-canvas-snapshot-to-nodejs/
-    const dataURL = req.body.img;
-    var matches = dataURL.match(/^data:.+\/(.+);base64,(.*)$/);
-    var buffer = new Buffer.from(matches[2], 'base64');
-  
-    // save canvas to 'images' folder
-    const testFilename = "Testbild.png" // TODO: der Name muss angepasst und in Datenbank gespeichert werden
-    fs.writeFile(__dirname + "/images/" + testFilename, buffer, function (err) {
-      console.log("done");
-    });
-  });
-  
 
 app.get("/start", function(req, res){
     res.sendFile(__dirname + "/views/start.html");
@@ -85,12 +72,12 @@ app.get("/draw", function(req, res){
 });
 
 
-//POST-Request
+
+//post requests
 app.post("/login", function(req, res){
     const username = req.body.username;
     const password = req.body.password;
     const param_sessionValue = req.body.username;
-    
    
     if (Acc.checkUsername(username) == false){
         if (Acc.checkLogin(username,password) == false){
@@ -101,10 +88,22 @@ app.post("/login", function(req, res){
         res.render("loginSuccess", {"username": username, "password": password});
         req.session.username = param_sessionValue
     } 
-
-
 });
 
+
+  // processing the upload action
+app.post('/onupload', function(req, res) {
+    // from http://zhangwenli.com/blog/2015/12/27/upload-canvas-snapshot-to-nodejs/
+const dataURL = req.body.img;
+var matches = dataURL.match(/^data:.+\/(.+);base64,(.*)$/);
+var buffer = new Buffer.from(matches[2], 'base64');
+  
+    // save canvas to 'images' folder
+const testFilename = "Testbild.png" // TODO: der Name muss angepasst und in Datenbank gespeichert werden
+fs.writeFile(__dirname + "/images/" + testFilename, buffer, function (err) {
+    console.log("done");
+    });
+});
 
 
 app.post("/newaccount", function(req, res){
@@ -119,11 +118,7 @@ app.post("/newaccount", function(req, res){
         res.render("registerSuccess", {"username": username, "password": password});
         req.session.username = param_sessionValue
     }
-
-
-
 });
-
 
 
 
@@ -132,9 +127,7 @@ let usernameData = db.prepare("SELECT username FROM accounts").all();
 let passwordData = db.prepare("SELECT password FROM accounts").all();
 
 
-
 class AccountManagment {
-
     checkUsername(usernameInput){
         for (let i = 0; i < usernameData.length; i++) {
             if (usernameData[i].username == usernameInput){
@@ -160,5 +153,3 @@ class AccountManagment {
 }
 
 let Acc = new AccountManagment();
-
-
