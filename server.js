@@ -90,6 +90,10 @@ app.post("/login", function(req, res){
     } 
 });
 
+app.post("/setLobby", function(req, res){
+    console.log(req.body);
+});
+
 
   // processing the upload action
 app.post('/onupload', function(req, res) {
@@ -153,3 +157,5 @@ class AccountManagment {
 }
 
 let Acc = new AccountManagment();
+
+const createServer = require('http').createServer;

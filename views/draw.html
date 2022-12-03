@@ -19,6 +19,8 @@
             <input id="lineWidth" name='lineWidth' type="number" value="5">
             <button id="clear">Clear</button>
             <button type="button" id="uploadButton">Done</button>
+            <button type="button" id="uploadButton">Download</button>
+            <button type="button" id="changeURL" onclick="insertURLParam('lobby', '1')">Change URL</button>
         </div>
         <div class="drawing-board">
             <canvas id="drawing-board"></canvas>
@@ -29,6 +31,7 @@
 <!-- Drawing Script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+    
     const canvas = document.getElementById('drawing-board');
         const toolbar = document.getElementById('toolbar');
         const context = canvas.getContext('2d');
@@ -50,11 +53,6 @@
             }
         });
 
-        toolbar.addEventListener('click', e => {
-            if (e.target.id === 'done') {
-                window.location.href="frontpage";
-            }
-        });
         
         toolbar.addEventListener('change', e => {
             if(e.target.id === 'stroke') {
@@ -94,7 +92,7 @@
         canvas.addEventListener('mousemove', draw);
 
 
-
+        const frontpage = "frontpage"
         /* Updoad script */
 
             // Setzt einen Eventhandler für den Button
@@ -110,12 +108,45 @@
                     img: dataURL
                 
                 });
-                window.location.href="frontpage";
+                console.log('test')
+                window.location.href=frontpage;
             }
 
+            function getURLParam(parameterName) {
+                let parameters = new URLSearchParams(window.location.search);
+                return parameters.get(parameterName);
+            } 
 
+            /* url parameter insert function for handling different game sessions */
+            function insertURLParam(key, value) {
+                    key = encodeURIComponent(key);
+                    value = encodeURIComponent(value);
+
+                    // kvp looks like ['key1=value1', 'key2=value2', ...]
+                    var kvp = document.location.search.substr(1).split('&');
+                    let i=0;
+
+                    for(; i<kvp.length; i++){
+                        if (kvp[i].startsWith(key + '=')) {
+                            let pair = kvp[i].split('=');
+                            pair[1] = value;
+                            kvp[i] = pair.join('=');
+                            break;
+                        }
+                    }
+
+                    if(i >= kvp.length){
+                        kvp[kvp.length] = [key,value].join('=');
+                    }
+
+                    // can return this or...
+                    let params = kvp.join('&');
+
+                    // reload page with new params
+                    document.location.search = params;
+                } 
+        
         </script>
-
 
 </body>
 </html>
