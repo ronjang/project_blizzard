@@ -1,0 +1,55 @@
+body{
+
+    background-image: url(images/Unbenannt.PNG);
+}
+h1{
+
+    font-family: al-seana;
+}
+
+
+div{
+    font-family: al-seana;
+    font-size: 40px;
+            margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: default;
+}
+
+input{
+
+    background-color: #04AA6D;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+}
+.register{
+
+    padding: 15px 25px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    font-size:40px;
+    font-family: al-seana;
+
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+}

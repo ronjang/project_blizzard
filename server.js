@@ -67,6 +67,10 @@ app.get('/style.css', function(req, res) {
     res.sendFile(__dirname + "/views/" + "styles.css");
   });
 
+app.get('/styledraw.css', function(req, res) {
+    res.sendFile(__dirname + "/views/" + "stylesdraw.css");
+});
+
 app.get("/draw", function(req, res){
     res.sendFile(__dirname + "/views/draw.html");
 });
