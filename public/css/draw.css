@@ -1,0 +1,70 @@
+body {
+    background-image: url("../images/Unbenannt.PNG");
+    background-size: cover;
+    overflow: hidden;
+    font-family: al-seana;
+    font-size: 40px;
+    font-weight: 1000;
+}
+
+.stroke {
+    width: 80px;
+    height: 30px;
+    box-shadow: 0 4px #999;
+
+
+}
+
+.stroke:hover {
+    background-color: #dcdcdc;
+}
+
+.stroke:active {
+    background-color: #dcdcdc;
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
+}
+
+.reiter {
+
+    font-size: large;
+    height: 20px;
+    width: 45px;
+}
+
+button {
+    color: black;
+    font-weight: 1000;
+    font-family: al-seana;
+    padding: 15px 25px;
+    font-size: 30px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    background-color: #ededed;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    margin-top: 5px;
+
+}
+
+button:hover {
+    background-color: #dcdcdc;
+}
+
+button:active {
+    background-color: #dcdcdc;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.drawing-board {
+    background-color: rgb(241, 241, 241);
+    margin: 30px auto auto;
+    width: 95%;
+}
+
+#toolbar {
+    margin-top: 10px;
+}

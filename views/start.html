@@ -1,85 +1,27 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>welcome to blizzard</title>
-        <link href="https://www.dafont.com/al-seana.font#top" rel="stylesheet">
-        <link rel="stylesheet" href="stylestart.css">
-    </head>
-    <body>
-        <h1>click start to draw</h1>
-        <button type="button" name="lobby" onclick="window.location.href='draw' + '?&lobby=' + getURLParam('lobby'); post('/sendLobby', {element: getURLParam('lobby')});">start</button> <br>
-        <button type="button" id="changeURL" onclick="createLobby();">create lobby</button> <br>
-        <div>share the link to play with friends!</div>
+<html lang="en">
+<head>
+    <title>welcome to blizzard</title>
+    <link href="https://www.dafont.com/al-seana.font#top" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/start.css">
+
+</head>
+<body>
+
+<a href="draw.html">
+    <button class="btn">DRAW</button>
+</a>
 
 
-            <p>
-                <b>Eine Kurze Anleitung</b> <br>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
-            </p>
-    </body>
+<a href="/invite">
+    <button class="btn2">Invite Friends</button>
+</a>
 
-    <script>
-        // TODO: implement: https://www.youtube.com/watch?v=Kw5tC5nQMRY
-        var lobbyC = getURLParam('lobby');
-        const data = lobbyC;
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-        fetch('/setLobby', options);
+<p class="text">
+    <b>A short Introduction</b> <br>
+    You'll each take a turn drawing on the same canvas. After 5 rounds of skribbling you'll receive your finished piece per Email.
+</p>
 
 
-
-            function getURLParam(parameterName) {
-                let parameters = new URLSearchParams(window.location.search);
-                return parameters.get(parameterName);
-            } 
-
-            function createLobby(){
-                insertURLParam('lobby', makeid('6'))
-            };
-
-            function makeid(length) {
-                var result           = '';
-                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                var charactersLength = characters.length;
-                for ( var i = 0; i < length; i++ ) {
-                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                }
-                return result;
-            }
-
-                    /* url parameter insert function for handling different game sessions */
-            function insertURLParam(key, value) {
-                    key = encodeURIComponent(key);
-                    value = encodeURIComponent(value);
-
-                    // kvp looks like ['key1=value1', 'key2=value2', ...]
-                    var kvp = document.location.search.substr(1).split('&');
-                    let i=0;
-
-                    for(; i<kvp.length; i++){
-                        if (kvp[i].startsWith(key + '=')) {
-                            let pair = kvp[i].split('=');
-                            pair[1] = value;
-                            kvp[i] = pair.join('=');
-                            break;
-                        }
-                    }
-
-                    if(i >= kvp.length){
-                        kvp[kvp.length] = [key,value].join('=');
-                    }
-
-                    // can return this or...
-                    let params = kvp.join('&');
-
-                    // reload page with new params
-                    document.location.search = params;
-                } 
-    </script>
-
+</body>
 </html>
