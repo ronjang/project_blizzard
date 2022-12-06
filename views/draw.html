@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -10,87 +11,116 @@
     <link href="https://www.dafont.com/al-seana.font#top" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/draw.css">
 </head>
+
 <body>
-<section class="container">
-    <div class="drawing-board">
-        <canvas id="drawing-board"></canvas>
-    </div>
-    <div id="toolbar">
-        <label for="stroke" class="colour">Color</label>
-        <input id="stroke" name="stroke" type="color" class="stroke">
-        <label for="lineWidth" class="size">Size</label>
-        <input id="lineWidth" name="lineWidth" class="reiter" type="number" value="5">
-        <button id="clear" class="clear">Clear</button>
-        <button id="done" class="done">Done</button>
-        <button id="download" class="download">Download Canvas</button>
-    </div>
-</section>
-<script>
-    const canvas = document.getElementById('drawing-board');
-    const toolbar = document.getElementById('toolbar');
-    const context = canvas.getContext('2d');
+    <section class="container">
+        <div class="drawing-board">
+            <canvas id="drawing-board"></canvas>
+        </div>
+        <div id="toolbar">
+            <label for="stroke" class="colour">Color</label>
+            <input id="stroke" name="stroke" type="color" class="stroke">
+            <label for="lineWidth" class="size">Size</label>
+            <input id="lineWidth" name="lineWidth" class="reiter" type="number" value="5">
+            <button id="clear" class="clear">Clear</button>
+            <button id="done" class="done" onclick="">Done</button>
+            <button id="download" class="download">Download Canvas</button>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        const canvas = document.getElementById('drawing-board');
+        const toolbar = document.getElementById('toolbar');
+        const context = canvas.getContext('2d');
 
-    const canvasOffsetX = canvas.offsetLeft;
-    const canvasOffsetY = canvas.offsetTop;
+        const canvasOffsetX = canvas.offsetLeft;
+        const canvasOffsetY = canvas.offsetTop;
 
-    canvas.width = window.innerWidth - canvasOffsetX * 2;
-    canvas.height = window.innerHeight - canvasOffsetY - toolbar.offsetHeight - 50;
+        canvas.width = window.innerWidth - canvasOffsetX * 2;
+        canvas.height = window.innerHeight - canvasOffsetY - toolbar.offsetHeight - 50;
 
-    toolbar.style.marginLeft = canvasOffsetX + 'px';
+        toolbar.style.marginLeft = canvasOffsetX + 'px';
 
-    let isPainting = false;
-    let lineWidth = 5;
-    let startX;
-    let startY;
+        let isPainting = false;
+        let lineWidth = 5;
+        let startX;
+        let startY;
 
-    toolbar.addEventListener('click', e => {
-        if (e.target.id === 'clear') {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    });
+        const register = "register"
+        /* Updoad script */
 
-    toolbar.addEventListener('click', e => {
-        if (e.target.id === 'done') {
-            window.location.href = "register";
-        }
-    });
+        // Setzt einen Eventhandler für den Button
+        const button = document.getElementById("done");
+        button.onclick = onUploadButtonClicked;
 
-    toolbar.addEventListener('change', e => {
-        if (e.target.id === 'stroke') {
-            context.strokeStyle = e.target.value;
-        }
+        function onUploadButtonClicked() {
+            // Lädt das Canvas als PNG zum Server hoch
+            const dataURL = document.getElementById("drawing-board").toDataURL("image/png");
 
-        if (e.target.id === 'lineWidth') {
-            lineWidth = e.target.value;
-        }
+            // AJAX-Aufruf, verwendet hier jquery
+            $.post('/onupload', {
+                img: dataURL
 
-    });
-
-    const draw = (e) => {
-        if (!isPainting) {
-            return;
+            });
+            console.log('test')
+            window.location.href = register;
         }
 
-        context.lineWidth = lineWidth;
-        context.lineCap = 'round';
+        function getURLParam(parameterName) {
+            let parameters = new URLSearchParams(window.location.search);
+            return parameters.get(parameterName);
+        }
 
-        context.lineTo(e.clientX - canvasOffsetX, e.clientY - canvasOffsetY); //warum 110?
-        context.stroke();
-    }
 
-    canvas.addEventListener('mousedown', (e) => {
-        isPainting = true;
-        startX = e.clientX;
-        startY = e.clientY;
-    });
+        toolbar.addEventListener('click', e => {
+            if (e.target.id === 'clear') {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        });
 
-    canvas.addEventListener('mouseup', e => {
-        isPainting = false;
-        context.stroke();
-        context.beginPath();
-    });
+/*         toolbar.addEventListener('click', e => {
+            if (e.target.id === 'done') {
+                window.location.href = "register";
+            }
+        }); */
 
-    canvas.addEventListener('mousemove', draw);
-</script>
+        toolbar.addEventListener('change', e => {
+            if (e.target.id === 'stroke') {
+                context.strokeStyle = e.target.value;
+            }
+
+            if (e.target.id === 'lineWidth') {
+                lineWidth = e.target.value;
+            }
+
+        });
+
+        const draw = (e) => {
+            if (!isPainting) {
+                return;
+            }
+
+            context.lineWidth = lineWidth;
+            context.lineCap = 'round';
+
+            context.lineTo(e.clientX - canvasOffsetX, e.clientY - canvasOffsetY); //warum 110?
+            context.stroke();
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isPainting = true;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        canvas.addEventListener('mouseup', e => {
+            isPainting = false;
+            context.stroke();
+            context.beginPath();
+        });
+
+        canvas.addEventListener('mousemove', draw);
+    </script>
 </body>
+
 </html>
