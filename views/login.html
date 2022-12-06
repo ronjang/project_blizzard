@@ -11,35 +11,37 @@
 <div class="container d-flex align-items-center justify-content-center">
     <div class="col-7 card border-3 shadow-lg my-5 ">
         <div class="card-body p-4 p-sm-5">
-            <h5 class="card-title text-center mb-5 fw-bold fs-1 ">Register</h5>
-            <form method="post" action="/newaccount">
+            <h5 class="card-title text-center mb-5 fw-bold fs-1 ">Sign In</h5>
+            <form method="post" action="/login">
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control border-2" id="floatingInput" placeholder="name@example.com"
+                    <input type="email" name="email" class="form-control border-2" id="floatingInput"
+                           placeholder="name@example.com"
                            autocomplete="email">
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" name="password" class="form-control border-2" id="floatingPassword" placeholder="Password"
+                    <input type="password" name="password" class="form-control border-2" id="floatingPassword"
+                           placeholder="Password"
                            autocomplete="password">
                 </div>
 
                 <div class="form-check mb-3">
                     <input class="form-check-input fs-4" type="checkbox" value="" id="rememberPasswordCheck">
                     <label class="form-check-label fs-4" for="rememberPasswordCheck">
-                        Remember Me
+                        Remember password
                     </label>
                 </div>
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Create
-
+                    <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign
+                        in
                     </button>
                 </div>
                 <hr class="my-4">
                 <div class="row">
                     <button class="col-6 btn btn-google btn-login text-uppercase fw-bold" type="submit">
-                        <i class="fab fa-google me-2"></i> Register with Google
+                        Sign in with Google
                     </button>
                     <button class="col-6 btn btn-meta btn-login text-uppercase fw-bold" type="submit">
-                        <i class="fab fa-facebook-f me-2"></i> Register with Meta
+                        Sign in with Meta
                     </button>
                 </div>
             </form>

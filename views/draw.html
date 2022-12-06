@@ -1,153 +1,96 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://www.dafont.com/al-seana.font#top" rel="stylesheet">
-    <link rel="stylesheet" href="styledraw.css">
+
     <title>Blizzard</title>
+    <link href="https://www.dafont.com/al-seana.font#top" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/draw.css">
 </head>
-
-
-
 <body>
-    <section class="container">
-        <div id="toolbar">
-            <h1>blizzard</h1>
-            <label for="stroke">Farbe</label>
-            <input id="stroke" name='stroke' type="color">
-            <label for="lineWidth">Stärke</label>
-            <input id="lineWidth" name='lineWidth' type="number" value="5">
-            <button id="clear">Clear</button>
-            <button type="button" id="uploadButton">Done</button>
-            <button type="button" id="uploadButton">Download</button>
-            <button type="button" id="changeURL" onclick="insertURLParam('lobby', '1')">Change URL</button>
-        </div>
-        <div class="drawing-board">
-            <canvas id="drawing-board"></canvas>
-        </div>
-    </section>
-
-
-<!-- Drawing Script -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-    
+<section class="container">
+    <div class="drawing-board">
+        <canvas id="drawing-board"></canvas>
+    </div>
+    <div id="toolbar">
+        <label for="stroke" class="colour">Color</label>
+        <input id="stroke" name="stroke" type="color" class="stroke">
+        <label for="lineWidth" class="size">Size</label>
+        <input id="lineWidth" name="lineWidth" class="reiter" type="number" value="5">
+        <button id="clear" class="clear">Clear</button>
+        <button id="done" class="done">Done</button>
+        <button id="download" class="download">Download Canvas</button>
+    </div>
+</section>
+<script>
     const canvas = document.getElementById('drawing-board');
-        const toolbar = document.getElementById('toolbar');
-        const context = canvas.getContext('2d');
-        
-        const canvasOffsetX = canvas.offsetLeft;
-        const canvasOffsetY = canvas.offsetTop;
-        
-        canvas.width = window.innerWidth - canvasOffsetX;
-        canvas.height = window.innerHeight - canvasOffsetY;
-        
-        let isPainting = false;
-        let lineWidth = 5;
-        let startX;
-        let startY;
-        
-        toolbar.addEventListener('click', e => {
-            if (e.target.id === 'clear') {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        });
+    const toolbar = document.getElementById('toolbar');
+    const context = canvas.getContext('2d');
 
-        
-        toolbar.addEventListener('change', e => {
-            if(e.target.id === 'stroke') {
-                context.strokeStyle = e.target.value;
-            }
-        
-            if(e.target.id === 'lineWidth') {
-                lineWidth = e.target.value;
-            }
-            
-        });
-        
-        const draw = (e) => {
-            if(!isPainting) {
-                return;
-            }
-        
-            context.lineWidth = lineWidth;
-            context.lineCap = 'round';
-        
-            context.lineTo(e.clientX - canvasOffsetX, e.clientY);
-            context.stroke();
+    const canvasOffsetX = canvas.offsetLeft;
+    const canvasOffsetY = canvas.offsetTop;
+
+    canvas.width = window.innerWidth - canvasOffsetX * 2;
+    canvas.height = window.innerHeight - canvasOffsetY - toolbar.offsetHeight - 50;
+
+    toolbar.style.marginLeft = canvasOffsetX + 'px';
+
+    let isPainting = false;
+    let lineWidth = 5;
+    let startX;
+    let startY;
+
+    toolbar.addEventListener('click', e => {
+        if (e.target.id === 'clear') {
+            context.clearRect(0, 0, canvas.width, canvas.height);
         }
-        
-        canvas.addEventListener('mousedown', (e) => {
-            isPainting = true;
-            startX = e.clientX;
-            startY = e.clientY;
-        });
-        
-        canvas.addEventListener('mouseup', e => {
-            isPainting = false;
-            context.stroke();
-            context.beginPath();
-        });
-        
-        canvas.addEventListener('mousemove', draw);
+    });
 
+    toolbar.addEventListener('click', e => {
+        if (e.target.id === 'done') {
+            window.location.href = "register";
+        }
+    });
 
-        const frontpage = "frontpage"
-        /* Updoad script */
+    toolbar.addEventListener('change', e => {
+        if (e.target.id === 'stroke') {
+            context.strokeStyle = e.target.value;
+        }
 
-            // Setzt einen Eventhandler für den Button
-            const button = document.getElementById("uploadButton");
-            button.onclick = onUploadButtonClicked;
+        if (e.target.id === 'lineWidth') {
+            lineWidth = e.target.value;
+        }
 
-            function onUploadButtonClicked() {
-                // Lädt das Canvas als PNG zum Server hoch
-                const dataURL = document.getElementById("drawing-board").toDataURL("image/png");
+    });
 
-                // AJAX-Aufruf, verwendet hier jquery
-                $.post('/onupload', {
-                    img: dataURL
-                
-                });
-                console.log('test')
-                window.location.href=frontpage;
-            }
+    const draw = (e) => {
+        if (!isPainting) {
+            return;
+        }
 
-            function getURLParam(parameterName) {
-                let parameters = new URLSearchParams(window.location.search);
-                return parameters.get(parameterName);
-            } 
+        context.lineWidth = lineWidth;
+        context.lineCap = 'round';
 
-            /* url parameter insert function for handling different game sessions */
-            function insertURLParam(key, value) {
-                    key = encodeURIComponent(key);
-                    value = encodeURIComponent(value);
+        context.lineTo(e.clientX - canvasOffsetX, e.clientY - canvasOffsetY); //warum 110?
+        context.stroke();
+    }
 
-                    // kvp looks like ['key1=value1', 'key2=value2', ...]
-                    var kvp = document.location.search.substr(1).split('&');
-                    let i=0;
+    canvas.addEventListener('mousedown', (e) => {
+        isPainting = true;
+        startX = e.clientX;
+        startY = e.clientY;
+    });
 
-                    for(; i<kvp.length; i++){
-                        if (kvp[i].startsWith(key + '=')) {
-                            let pair = kvp[i].split('=');
-                            pair[1] = value;
-                            kvp[i] = pair.join('=');
-                            break;
-                        }
-                    }
+    canvas.addEventListener('mouseup', e => {
+        isPainting = false;
+        context.stroke();
+        context.beginPath();
+    });
 
-                    if(i >= kvp.length){
-                        kvp[kvp.length] = [key,value].join('=');
-                    }
-
-                    // can return this or...
-                    let params = kvp.join('&');
-
-                    // reload page with new params
-                    document.location.search = params;
-                } 
-        
-        </script>
-
+    canvas.addEventListener('mousemove', draw);
+</script>
 </body>
 </html>

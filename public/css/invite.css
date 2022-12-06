@@ -1,0 +1,55 @@
+body {
+
+    background-image: url(../images/Unbenannt.PNG);
+    background-size: cover;
+
+}
+
+
+h1 {
+    text-align: center;
+    font-family: al-seana;
+    font-size: 40px;
+}
+
+h2 {
+    text-align: center;
+}
+
+input {
+    margin: auto;
+    position: fixed;
+    left: 38%;
+    width: 500px;
+    height: 40px;
+
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 60px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    font-family: al-seana;
+
+    margin-top: 40px;
+    position: fixed;
+    left: 45%;
+
+}
+
+.button:hover {
+    background-color: #3e8e41
+}
+
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

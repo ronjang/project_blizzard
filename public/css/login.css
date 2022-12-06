@@ -1,0 +1,70 @@
+body {
+    background-image: url(../images/Unbenannt.PNG);
+    height: 100vh;
+    font-family: al-seana;
+
+
+}
+
+.container {
+    height: 100%;
+}
+
+.card {
+
+    border-radius: 5%;
+    background-color: rgb(244, 244, 244, 0.2);
+    border-color: rgb(202, 202, 202);
+    box-shadow: px;
+    font-size: 30px;
+
+}
+
+.form-control {
+    background-color: rgb(188, 188, 188);
+    border-color: rgb(55, 55, 55);
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+
+    opacity: 0.3;
+
+    font-size: 30px;
+}
+
+label:hover {
+    color: rgb(108, 108, 108, 0.2);
+    background-image: linear-gradient(to left, violet, indigo, blue, green, rgb(74, 74, 0), orange, red);
+    -webkit-background-clip: text;
+    color: transparent;
+
+
+}
+
+.btn {
+    background-color: rgb(132, 132, 132);
+    border: 0px;
+    font-size: 25px;
+}
+
+.btn:hover {
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    color: transparent;
+    color: whitesmoke;
+}
+
+.btn-google {
+
+    background-color: rgb(219, 68, 55);
+    color: aliceblue;
+}
+
+.btn-meta {
+    background-color: rgb(0, 128, 251);
+    color: aliceblue;
+}
+
+#button {
+    outline: none;
+    border-style: none;
+}
