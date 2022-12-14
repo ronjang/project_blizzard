@@ -122,19 +122,6 @@ app.post('/onupload', function (req, res) {
 });
 
 
-app.post("/newaccount", function (req, res) {
-    const username = req.body.email;
-    const password = req.body.password;
-    const param_sessionValue = req.body.email;
-
-    if (Acc.checkUsername(username) == true) {
-        res.render("registerError", {"username": username});
-    } else {
-        Acc.addUser(username, password)
-        res.render("registerSuccess", {"username": username, "password": password});
-        req.session.username = param_sessionValue
-    }
-});
 
 
 // account managment
@@ -166,6 +153,21 @@ class AccountManagment {
         passwordData.push({"password": passwordInput})
     }
 }
+
+app.post("/newaccount", function (req, res) {
+    const username = req.body.email;
+    const password = req.body.password;
+    const param_sessionValue = req.body.email;
+
+    if (Acc.checkUsername(username) == true) {
+        res.render("registerError", {"username": username});
+    } else {
+        Acc.addUser(username, password)
+        res.render("registerSuccess", {"username": username, "password": password});
+        req.session.username = param_sessionValue
+    }
+});
+
 
 let Acc = new AccountManagment();
 
